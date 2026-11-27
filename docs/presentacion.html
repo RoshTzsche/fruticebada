@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgroCebada · Presentación del proyecto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #0f2a22;
+      --bg-mid: #1a4034;
+      --leaf: #2f7a5a;
+      --leaf-bright: #4ea87a;
+      --gold: #c4a568;
+      --cream: #f4f7f4;
+      --ink: #16352c;
+      --muted: #5a7068;
+      --slide-pad: clamp(28px, 5vw, 64px);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: "Source Sans 3", system-ui, sans-serif;
+      color: var(--cream);
+      background:
+        radial-gradient(1200px 700px at 10% -10%, #2a5a48 0%, transparent 55%),
+        radial-gradient(900px 600px at 100% 20%, #3a4f2a 0%, transparent 50%),
+        linear-gradient(160deg, var(--bg-deep), var(--bg-mid) 55%, #123028);
+      overflow: hidden;
+    }
+
+    .deck {
+      height: 100%;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: var(--slide-pad);
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(18px);
+      transition: opacity .35s ease, transform .35s ease, visibility .35s;
+      pointer-events: none;
+    }
+
+    .slide.is-active {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      pointer-events: auto;
+    }
+
+    .brand {
+      font-family: Fraunces, Georgia, serif;
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin: 0;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-family: Fraunces, Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      letter-spacing: -0.02em;
+      margin: 0 0 8px;
+      max-width: 18ch;
+      line-height: 1.15;
+    }
+
+    .lede {
+      max-width: 42rem;
+      font-size: clamp(1.05rem, 2.1vw, 1.35rem);
+      line-height: 1.55;
+      color: #d7e6df;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+      max-width: 960px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      backdrop-filter: blur(6px);
+    }
+
+    .card strong {
+      display: block;
+      font-family: Fraunces, Georgia, serif;
+      font-size: 1.65rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .card span {
+      color: #c5d8cf;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    ul.points {
+      margin: 6px 0 0;
+      padding: 0;
+      list-style: none;
+      max-width: 46rem;
+      display: grid;
+      gap: 12px;
+    }
+
+    ul.points li {
+      position: relative;
+      padding-left: 1.15rem;
+      color: #d7e6df;
+      line-height: 1.45;
+      font-size: 1.05rem;
+    }
+
+    ul.points li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--leaf-bright);
+    }
+
+    table.metrics {
+      border-collapse: collapse;
+      width: min(920px, 100%);
+      margin-top: 8px;
+      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    table.metrics th,
+    table.metrics td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    table.metrics th {
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    table.metrics td { color: #e5f0eb; }
+
+    .team {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      max-width: 980px;
+      margin-top: 8px;
+    }
+
+    .member {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .member img {
+      width: 96px;
+      height: 96px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto 12px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .member h3 {
+      margin: 0 0 4px;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .member p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #b9cdc4;
+      line-height: 1.4;
+    }
+
+    .controls {
+      position: fixed;
+      left: var(--slide-pad);
+      right: var(--slide-pad);
+      bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .controls > * { pointer-events: auto; }
+
+    .progress {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      overflow: hidden;
+      max-width: 420px;
+    }
+
+    .progress > i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--leaf), var(--gold));
+      transition: width .3s ease;
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .nav button {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(15, 42, 34, 0.7);
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .nav button:hover { border-color: var(--leaf-bright); }
+    .nav button:disabled { opacity: 0.35; cursor: default; }
+
+    .counter {
+      font-variant-numeric: tabular-nums;
+      font-size: 0.9rem;
+      color: #b7cac2;
+      min-width: 4.5ch;
+      text-align: right;
+    }
+
+    .hint {
+      position: fixed;
+      top: 18px;
+      right: var(--slide-pad);
+      font-size: 0.8rem;
+      color: #9fb5ac;
+      z-index: 5;
+    }
+
+    .field {
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 28%;
+      background:
+        linear-gradient(180deg, transparent, rgba(15, 42, 34, 0.55)),
+        repeating-linear-gradient(
+          -12deg,
+          transparent 0 18px,
+          rgba(78, 168, 122, 0.05) 18px 19px
+        );
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    a.inline {
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(196, 165, 104, 0.45);
+    }
+
+    @media (max-width: 700px) {
+      .hint { display: none; }
+      h2 { max-width: none; }
+      .controls { bottom: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="field" aria-hidden="true"></div>
+  <p class="hint">← → o clic para navegar</p>
+
+  <main class="deck" id="deck" aria-live="polite">
+    <section class="slide is-active" data-slide="0">
+      <span class="eyebrow">Documentación · Reto Agro 2026</span>
+      <h1 class="brand">AgroCebada</h1>
+      <p class="lede">Dashboard de rendimiento y contexto espacial: 197 parcelas de cebada, ensamble espacial y una interfaz para explorar predicciones en toneladas por hectárea.</p>
+    </section>
+
+    <section class="slide" data-slide="1">
+      <span class="eyebrow">El reto</span>
+      <h2>Predecir rendimiento a partir del territorio</h2>
+      <p class="lede">Combinamos mediciones satelitales, clima y topografía para estimar el rendimiento por parcela. Las 138 con rendimiento conocido entrenan y evalúan; el modelo final estima las otras 59.</p>
+      <div class="grid">
+        <article class="card"><strong>Abr–Oct 2025</strong><span>Ventana de insumos. El rendimiento es un resultado cerrado en t/ha, no una serie anual.</span></article>
+        <article class="card"><strong>¿Generaliza?</strong><span>Comparamos validación intercalada y por grupos espaciales para ver si funciona en zonas nuevas.</span></article>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="2">
+      <span class="eyebrow">Datos</span>
+      <h2>197 parcelas en 9 municipios</h2>
+      <div class="grid">
+        <article class="card"><strong>138</strong><span>Referencias OOF con rendimiento observado</span></article>
+        <article class="card"><strong>59</strong><span>Predicciones finales del ensamble (sin observado)</span></article>
+        <article class="card"><strong>187</strong><span>Variables: clima, topografía, vegetación y fenología</span></article>
+        <article class="card"><strong>3</strong><span>Estados: Puebla, Hidalgo y Tlaxcala</span></article>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="3">
+      <span class="eyebrow">Modelo</span>
+      <h2>Ensamble 50 / 50</h2>
+      <p class="lede">KNN espacial + HistGradientBoosting. Las predicciones OOF promedian tres repeticiones de RepeatedKFold; las 59 finales usan el modelo ajustado con las 138 referencias.</p>
+      <ul class="points">
+        <li>KNN con 5 vecinos y pesos inversos a la distancia.</li>
+        <li>HGB con 20 variables seleccionadas por información mutua.</li>
+        <li>SHAP local (top 3) explica el componente HGB, no todo el ensamble.</li>
+        <li>Intervalos empíricos nominales al 80 % según proximidad a referencias.</li>
+      </ul>
+    </section>
+
+    <section class="slide" data-slide="4">
+      <span class="eyebrow">Validación</span>
+      <h2>Tres esquemas, un ensamble</h2>
+      <table class="metrics">
+        <thead>
+          <tr><th>Esquema</th><th>MAE (t/ha)</th><th>RMSE</th><th>R²</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>RepeatedKFold</td><td>0.373</td><td>0.521</td><td>0.622</td></tr>
+          <tr><td>GroupKFold · CHIRPS</td><td>0.497</td><td>0.633</td><td>0.443</td></tr>
+          <tr><td>LOGO · Municipio</td><td>0.482</td><td>0.707</td><td>0.305</td></tr>
+        </tbody>
+      </table>
+      <p class="lede" style="margin-top:14px;font-size:1rem">Métricas pooled del Ensamble_50_50. LOGO mide extrapolación geográfica al dejar un municipio fuera.</p>
+    </section>
+
+    <section class="slide" data-slide="5">
+      <span class="eyebrow">Producto</span>
+      <h2>Dashboard interactivo</h2>
+      <ul class="points">
+        <li>Mapa satelital con capas de precipitación, temperatura, elevación y pendiente.</li>
+        <li>Ficha por parcela: rendimiento, errores, aportes SHAP, contexto y vecinos.</li>
+        <li>Tabla de parcelas con filtros compartidos, ordenación y exportación CSV.</li>
+        <li>Documentación embebida, notebooks y asistente de explicación (Gemini / mock).</li>
+      </ul>
+    </section>
+
+    <section class="slide" data-slide="6">
+      <span class="eyebrow">Pipeline</span>
+      <h2>Cuatro libretas, un flujo</h2>
+      <div class="grid">
+        <article class="card"><strong>01</strong><span>Calidad y contexto agronómico</span></article>
+        <article class="card"><strong>02</strong><span>Ingeniería fenológica y espacial</span></article>
+        <article class="card"><strong>03</strong><span>Validación robusta y ablación</span></article>
+        <article class="card"><strong>04</strong><span>Interpretabilidad y artefactos del dashboard</span></article>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="7">
+      <span class="eyebrow">Equipo</span>
+      <h2>Quién construyó AgroCebada</h2>
+      <div class="team">
+        <article class="member">
+          <img src="../public/equipo/rosh.png" alt="Rosh Guadiana Páez" width="96" height="96">
+          <h3>Rosh Guadiana Páez</h3>
+          <p>Ingeniería biomédica</p>
+        </article>
+        <article class="member">
+          <img src="../public/equipo/gabriel.png" alt="Angel Gabriel Munguia Velazquez" width="96" height="96">
+          <h3>Angel Gabriel Munguia</h3>
+          <p>Física</p>
+        </article>
+        <article class="member">
+          <img src="../public/equipo/saul.png" alt="Saul Tellez Mastranzo" width="96" height="96">
+          <h3>Saul Tellez Mastranzo</h3>
+          <p>Ingeniería en sistemas</p>
+        </article>
+        <article class="member">
+          <img src="../public/equipo/abril.png" alt="Marcela Abril Sánchez Orea" width="96" height="96">
+          <h3>Marcela Abril Sánchez</h3>
+          <p>Ciencia de datos</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="8">
+      <span class="eyebrow">Documentación</span>
+      <h2>Dónde seguir</h2>
+      <ul class="points">
+        <li>App: sección <strong>Documentación</strong> (reto, equipo, resultados y notebooks).</li>
+        <li>README del repositorio: metodología, unidades y limitaciones.</li>
+        <li>Repo:
+          <a class="inline" href="https://github.com/AbrilSchz/agrocebada_web" target="_blank" rel="noopener">AbrilSchz/agrocebada_web</a>
+          · upstream
+          <a class="inline" href="https://github.com/RoshTzsche/agrocebada_web" target="_blank" rel="noopener">RoshTzsche/agrocebada_web</a>
+        </li>
+        <li>Abrir esta presentación: <code>docs/presentacion.html</code></li>
+      </ul>
+    </section>
+  </main>
+
+  <div class="controls">
+    <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+    <div class="nav">
+      <button type="button" id="prev" aria-label="Diapositiva anterior">Anterior</button>
+      <button type="button" id="next" aria-label="Diapositiva siguiente">Siguiente</button>
+      <span class="counter" id="counter">1 / 9</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+      var total = slides.length;
+      var index = 0;
+      var bar = document.getElementById("bar");
+      var counter = document.getElementById("counter");
+      var prev = document.getElementById("prev");
+      var next = document.getElementById("next");
+
+      function show(i) {
+        index = Math.max(0, Math.min(total - 1, i));
+        slides.forEach(function (slide, n) {
+          slide.classList.toggle("is-active", n === index);
+        });
+        bar.style.width = ((index + 1) / total * 100) + "%";
+        counter.textContent = (index + 1) + " / " + total;
+        prev.disabled = index === 0;
+        next.disabled = index === total - 1;
+      }
+
+      prev.addEventListener("click", function () { show(index - 1); });
+      next.addEventListener("click", function () { show(index + 1); });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") {
+          e.preventDefault();
+          show(index + 1);
+        } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+          e.preventDefault();
+          show(index - 1);
+        } else if (e.key === "Home") {
+          show(0);
+        } else if (e.key === "End") {
+          show(total - 1);
+        }
+      });
+
+      document.getElementById("deck").addEventListener("click", function (e) {
+        if (e.target.closest("a, button")) return;
+        if (e.clientX > window.innerWidth * 0.55) show(index + 1);
+        else if (e.clientX < window.innerWidth * 0.45) show(index - 1);
+      });
+
+      show(0);
+    })();
+  </script>
+</body>
+</html>
